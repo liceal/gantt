@@ -1,7 +1,7 @@
 {
-  "name": "@femessage/v-gantt",
-  "version": "1.0.0",
-  "description": "vue gantt component, just like omniplan!",
+  "name": "@liceal/v-gantt",
+  "version": "1.0.11",
+  "description": "复制一份FEMessage/v-gantt进行修改的包",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   },
   "types": "src/index.d.ts",
   "scripts": {
+    "serve": "vue-cli-service serve",
     "dev": "vue-cli-service styleguidist",
     "build": "yarn build:umd & yarn build:esm & yarn doc",
     "build:umd": "vue-cli-service build --target lib src/main.ts",
@@ -44,7 +45,8 @@
     "dayjs": "^1.8.29",
     "lodash.clonedeep": "^4.5.0",
     "lodash.uniq": "^4.5.0",
-    "store2": "^2.11.2"
+    "store2": "^2.11.2",
+    "upgrade": "^1.1.0"
   },
   "devDependencies": {
     "@femessage/github-release-notes": "latest",
@@ -112,6 +114,5 @@
       "git add"
     ]
   },
-  "gren": "@femessage/grenrc",
   "vue-sfc-cli": "1.12.0"
 }

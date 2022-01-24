@@ -10,7 +10,7 @@ import {
 } from './utils/types'
 import Vue, { VueConstructor, PropType } from 'vue'
 
-declare module '@femessage/v-gantt' {
+declare module '@liceal/v-gantt' {
   class FemessageComponent extends Vue {
     static install(vue: typeof Vue): void
   }
