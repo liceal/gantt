@@ -37,7 +37,7 @@
                 },
               ]"
             >
-              <span :title="d">{{ getDayContent(d) }}</span>
+              <span :title="d" :class="d">{{ getDayContent(d) }}</span>
               <template v-if="dayMode">
                 <span v-if="isToday(d)" class="desc">今天</span>
                 <span v-else-if="isRestDay(d)" class="desc">{{
@@ -94,6 +94,19 @@
       >
         <el-option v-for="u in colUnitOptions" :key="u.value" v-bind="u" />
       </el-select>
+      <!-- 日期过滤 -->
+      <el-date-picker
+        v-if="isDateFilter"
+        class="date-picker"
+        style="width: 135px;"
+        v-model="filterDate"
+        @change="scrollToDate"
+        size="small"
+        type="date"
+        placeholder="日期定位"
+        value-format="yyyy-MM-dd"
+      >
+      </el-date-picker>
     </section>
   </div>
 </template>
@@ -340,6 +353,10 @@ export default Vue.extend({
       type: Object as PropType<{ node: GanttNode | null; resizedCols: number }>,
       required: true,
     },
+    isDateFilter: {
+      type: Boolean,
+      required: true,
+    },
   },
   data: () => ({
     weekdays: {} as DayData,
@@ -355,6 +372,7 @@ export default Vue.extend({
       originDate: { start: '', end: '' },
       date: { start: '', end: '' },
     } as HoveringNode,
+    filterDate: '',
   }),
   computed: {
     hasToday(): boolean {
@@ -702,9 +720,25 @@ export default Vue.extend({
       ee.emit(ee.Event.ScrollToNode, id)
     },
     scrollToToday() {
+      console.log('123')
+
       const el = document.querySelector('.v-gantt .date.today')
       if (!el) return
       el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      })
+    },
+    /** 选择日期 */
+    scrollToDate(date = '') {
+      if (!date) return
+      const el = document.getElementsByClassName(date || '')
+      if (!el || !el.length) {
+        this.$message.error('超出时间')
+        return
+      }
+      el[0].scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
         inline: 'center',
@@ -925,6 +959,7 @@ export default Vue.extend({
 
     .today,
     .col-unit {
+      margin-right: 10px;
       width: 56px; // el-button size=small
       box-shadow: 0 3px 12px 0 rgba(48, 48, 48, 0.05),
         0 3px 6px 0 rgba(48, 48, 48, 0.1); // 来自 ones-plan 的样式
@@ -951,6 +986,12 @@ export default Vue.extend({
       /deep/ i {
         color: @fontColor;
       }
+    }
+
+    .date-picker {
+      width: 135px; // el-button size=small
+      box-shadow: 0 3px 12px 0 rgba(48, 48, 48, 0.05),
+        0 3px 6px 0 rgba(48, 48, 48, 0.1); // 来自 ones-plan 的样式
     }
   }
 }

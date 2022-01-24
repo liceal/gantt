@@ -1,5 +1,6 @@
 /**
  * 组件内全局通信机制
+ * 枚举 ResizeStart=0 Resize=1 ... 依次下去
  */
 export enum GanttEvent {
   ResizeStart,

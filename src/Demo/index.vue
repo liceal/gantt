@@ -4,6 +4,7 @@
     :tree-attrs="treeAttrs"
     :data.sync="data"
     :view.sync="view"
+    :is-date-filter="true"
   >
     <div slot="tree-header">
       <h5 style="margin: 0;">本地测试甘特图</h5>
@@ -83,13 +84,14 @@ export default {
         {
           id: 'milestone-2',
           name: '里程碑-2',
-          date: d('17'),
+          date: d('24'),
           done: false,
         },
       ],
       treeAttrs: {
         draggable: true,
       },
+      filterDate: '',
     }
   },
 }

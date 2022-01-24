@@ -17,6 +17,7 @@
       :scroll-top.sync="scrollTop"
       :drag-data="dragData"
       :resize-data="resizeData"
+      :is-date-filter="isDateFilter"
     />
   </div>
 </template>
@@ -153,6 +154,13 @@ export default Vue.extend({
     treeAttrs: {
       type: Object,
       default: () => ({}),
+    },
+    /**
+     * 是否开启日期过滤
+     */
+    isDateFilter: {
+      type: Boolean,
+      default: true,
     },
   },
   data: () => ({
