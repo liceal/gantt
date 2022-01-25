@@ -11,7 +11,13 @@
       <gantt-progress :progress="data.progress" type="group" />
     </div>
     <transition>
-      <gantt-layout v-show="showChildren" :data="data.children" :bus="bus" />
+      <gantt-layout
+        v-show="showChildren"
+        :data="data.children"
+        :bus="bus"
+        :drag="drag"
+        :resize="resize"
+      />
     </transition>
   </div>
 </template>
@@ -34,6 +40,14 @@ export default Vue.extend({
     bus: {
       type: Object as PropType<Bus>,
       required: true,
+    },
+    drag: {
+      type: Boolean,
+      default: true,
+    },
+    resize: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {

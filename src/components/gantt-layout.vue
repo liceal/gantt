@@ -1,6 +1,13 @@
 <template>
   <div class="gantt-layout">
-    <gantt-node v-for="d in data" :key="d.id" :data="d" :bus="bus" />
+    <gantt-node
+      v-for="d in data"
+      :key="d.id"
+      :data="d"
+      :bus="bus"
+      :drag="drag"
+      :resize="resize"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -19,6 +26,14 @@ export default Vue.extend({
     bus: {
       type: Object as PropType<Bus>,
       required: true,
+    },
+    drag: {
+      type: Boolean,
+      default: true,
+    },
+    resize: {
+      type: Boolean,
+      default: true,
     },
   },
 })

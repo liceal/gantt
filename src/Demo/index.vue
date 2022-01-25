@@ -5,6 +5,9 @@
     :data.sync="data"
     :view.sync="view"
     :is-date-filter="true"
+    :is-show-tree="true"
+    :drag="true"
+    :resize="false"
   >
     <div slot="tree-header">
       <h5 style="margin: 0;">本地测试甘特图</h5>

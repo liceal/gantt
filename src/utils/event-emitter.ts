@@ -40,6 +40,8 @@ export default class EventEmitter {
   }
 
   emit(event: GanttEvent, ...args: any) {
+    // console.log(event, args);
+
     const handlers = this.getHandlers(event)
     handlers.forEach((handler) => handler(...args))
   }

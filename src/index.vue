@@ -1,6 +1,7 @@
 <template>
   <div class="v-gantt">
     <gantt-tree
+      v-if="isShowTree"
       :data="ganttData"
       :bus="bus"
       :scroll-top.sync="scrollTop"
@@ -18,6 +19,8 @@
       :drag-data="dragData"
       :resize-data="resizeData"
       :is-date-filter="isDateFilter"
+      :drag="drag"
+      :resize="resize"
     />
   </div>
 </template>
@@ -159,6 +162,27 @@ export default Vue.extend({
      * 是否开启日期过滤
      */
     isDateFilter: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 是否显示树
+     */
+    isShowTree: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 启用拖拽
+     */
+    drag: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 启用改变大小
+     */
+    resize: {
       type: Boolean,
       default: true,
     },

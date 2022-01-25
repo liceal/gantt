@@ -73,7 +73,12 @@
           class="y-scroll-container"
           @scroll="onScroll"
         >
-          <gantt-layout :data="layoutData" :bus="bus" />
+          <gantt-layout
+            :data="layoutData"
+            :bus="bus"
+            :drag="drag"
+            :resize="resize"
+          />
         </div>
       </section>
     </div>
@@ -356,6 +361,17 @@ export default Vue.extend({
     isDateFilter: {
       type: Boolean,
       required: true,
+      default: true,
+    },
+    drag: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    resize: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   data: () => ({
@@ -601,40 +617,42 @@ export default Vue.extend({
       this.hoveringNode.visible = false
     })
 
-    ee.on(
-      ee.Event.Drag,
-      ({
-        movedCols,
-        dataInPx,
-      }: {
-        movedCols: number
-        dataInPx: { [key: string]: number }
-      }) => {
-        if (!this.monthMode) return
+    if (this.drag) {
+      ee.on(
+        ee.Event.Drag,
+        ({
+          movedCols,
+          dataInPx,
+        }: {
+          movedCols: number
+          dataInPx: { [key: string]: number }
+        }) => {
+          if (!this.monthMode) return
 
-        const minWidth =
-          dateMinWidth[this.hoveringNode.isMilestone ? 'milestone' : 'other']
+          const minWidth =
+            dateMinWidth[this.hoveringNode.isMilestone ? 'milestone' : 'other']
 
-        const date = this.hoveringNode.date
+          const date = this.hoveringNode.date
 
-        date.start = dayjs.$add(this.hoveringNode.originDate.start, movedCols)
+          date.start = dayjs.$add(this.hoveringNode.originDate.start, movedCols)
 
-        if (!this.hoveringNode.isMilestone) {
-          date.end = dayjs.$add(this.hoveringNode.originDate.end, movedCols)
-        }
+          if (!this.hoveringNode.isMilestone) {
+            date.end = dayjs.$add(this.hoveringNode.originDate.end, movedCols)
+          }
 
-        const width = dataInPx.w < minWidth ? minWidth : dataInPx.w
-        const left = dataInPx.x - (width - dataInPx.w) / 2
+          const width = dataInPx.w < minWidth ? minWidth : dataInPx.w
+          const left = dataInPx.x - (width - dataInPx.w) / 2
 
-        this.hoveringNode = {
-          ...this.hoveringNode,
-          visible: true, // drag 时即便不再 hover 也依然显示当前节点日期
-          width,
-          left,
-          date,
-        }
-      },
-    )
+          this.hoveringNode = {
+            ...this.hoveringNode,
+            visible: true, // drag 时即便不再 hover 也依然显示当前节点日期
+            width,
+            left,
+            date,
+          }
+        },
+      )
+    }
 
     ee.on(
       ee.Event.Resize,

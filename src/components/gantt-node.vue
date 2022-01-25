@@ -12,6 +12,8 @@
       },
     ]"
     :style="style"
+    :drag="drag"
+    :resize="resize"
     @drag-start="onDragStart"
     @resize-start="onResizeStart"
     @focus-start="startFocus"
@@ -46,6 +48,14 @@ export default Vue.extend({
     },
     bus: {
       type: Object as PropType<Bus>,
+      required: true,
+    },
+    drag: {
+      type: Boolean,
+      required: true,
+    },
+    resize: {
+      type: Boolean,
       required: true,
     },
   },
@@ -153,15 +163,17 @@ export default Vue.extend({
       document.documentElement.classList.add('grabbing')
     },
     onDrag(e: MouseEvent) {
-      this.dragData.offsetX += e.movementX
-      const { ee } = this.bus
-      ee.emit(ee.Event.Drag, {
-        movedCols: dividedBy(this.dragData.offsetX, this.bus.colW),
-        dataInPx: {
-          ...this.dataInPx,
-          ...this.absolutePosition,
-        },
-      })
+      if (this.drag) {
+        this.dragData.offsetX += e.movementX
+        const { ee } = this.bus
+        ee.emit(ee.Event.Drag, {
+          movedCols: dividedBy(this.dragData.offsetX, this.bus.colW),
+          dataInPx: {
+            ...this.dataInPx,
+            ...this.absolutePosition,
+          },
+        })
+      }
     },
     onDragEnd() {
       document.removeEventListener('mousemove', this.onDrag)
@@ -182,16 +194,18 @@ export default Vue.extend({
       document.documentElement.classList.add('col-resizing')
     },
     onResize(e: MouseEvent) {
-      this.resizeData.offsetX += e.movementX
+      if (this.resize) {
+        this.resizeData.offsetX += e.movementX
 
-      const { ee } = this.bus
-      ee.emit(ee.Event.Resize, {
-        resizedCols: Math.max(
-          1 - this.data.w, // 至少一列
-          dividedBy(this.resizeData.offsetX, this.bus.colW),
-        ),
-        dataInPx: this.dataInPx,
-      })
+        const { ee } = this.bus
+        ee.emit(ee.Event.Resize, {
+          resizedCols: Math.max(
+            1 - this.data.w, // 至少一列
+            dividedBy(this.resizeData.offsetX, this.bus.colW),
+          ),
+          dataInPx: this.dataInPx,
+        })
+      }
     },
     onResizeEnd() {
       document.removeEventListener('mousemove', this.onResize)
