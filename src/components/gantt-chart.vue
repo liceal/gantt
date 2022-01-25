@@ -132,6 +132,7 @@ import {
 import { isGroup, isMilestone, search } from '@/utils'
 import dayjs from '@/utils/day'
 import { DayData, getWeekdays, isRestDay } from '@/utils/weekday'
+import { Message } from 'element-ui'
 
 const colUnitOptions = [
   {
@@ -753,7 +754,7 @@ export default Vue.extend({
       if (!date) return
       const el = document.getElementsByClassName(date || '')
       if (!el || !el.length) {
-        this.$message.error('超出时间')
+        Message.error('超出时间')
         return
       }
       el[0].scrollIntoView({
